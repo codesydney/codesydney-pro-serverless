@@ -1,0 +1,30 @@
+{
+  "name": "techies4good",
+  "version": "1.0.0",
+  "description": "# The Team * @promie | Promie Yutasane | DevOps/Web Developer * @washington-shoji | Washington Shoji | Web Developer * @engramar | Engramar Bollas | Product Manager",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cd server && npm run start:dev",
+    "clean": "find . -name node_modules -type d -prune -exec rm -rf '{}' +",
+    "prettier:check": "prettier --check \"./**/*.{js,ts,jsx,tsx,json}\"",
+    "prettier:write": "prettier --write \"./**/*.{js,ts,jsx,tsx,json}\"",
+    "prettier": "prettier --write \"./**/*.{js,ts,jsx,tsx,json}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codesydney/techies4good.git"
+  },
+  "author": "Code.Sydney",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codesydney/techies4good/issues"
+  },
+  "homepage": "https://github.com/codesydney/techies4good#readme",
+  "workspaces": [
+    "server"
+  ],
+  "dependencies": {
+    "concurrently": "^8.2.2",
+    "prettier": "^3.2.5"
+  }
+}
