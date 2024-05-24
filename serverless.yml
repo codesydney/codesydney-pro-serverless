@@ -1,4 +1,4 @@
-service: nestjs-serverless-pg
+service: techies4good-serverless
 
 frameworkVersion: '3'
 
