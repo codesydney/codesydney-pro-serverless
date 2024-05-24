@@ -14,7 +14,7 @@
     "start:prod": "node dist/main",
     "serverless:offline": "npm run build && serverless offline",
     "serverless:deploy": "serverless deploy --stage prod",
-    "serverless:remove": "serverless remove",
+    "serverless:remove": "serverless remove --stage prod",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
