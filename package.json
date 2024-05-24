@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "cd server && npm run start:dev",
+    "serverless:offline": "cd server && rm -rf dist && npm run build && npx serverless offline",
+    "serverless:deploy": "npx serverless deploy",
+    "serverless:remove": "npx serverless remove",
     "clean": "find . -name node_modules -type d -prune -exec rm -rf '{}' +",
     "prettier:check": "prettier --check \"./**/*.{js,ts,jsx,tsx,json}\"",
     "prettier:write": "prettier --write \"./**/*.{js,ts,jsx,tsx,json}\"",
