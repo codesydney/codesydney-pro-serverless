@@ -98,8 +98,9 @@ jobs:
         run: npm run serverless:deploy
 
   lambda-remove:
+    needs: lambda-deploy
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.remove == 'true'
     steps:
       - name: Get Code
         uses: actions/checkout@v4
