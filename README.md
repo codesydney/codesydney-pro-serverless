@@ -5,8 +5,16 @@
 * @washington-shoji | Washington Shoji | Web Developer
 * @engramar | Engramar Bollas | Product Manager
 
-# Tech Stack
-* TBA
+### Backend
+* NestJS + TypeScript
+* Postgres
+* AWS (Lambda, API Gateway)
+* Serverless Framework (using CloudFormation)
+
+### Frontend
+* React + TypeScript
+* AWS (S3, CloudFront)
+* Terraform (Infrastructure as Code)
 
 # Team Consensus
 * Monorepo
