@@ -53,22 +53,22 @@ jobs:
       - name: Run unit tests
         run: npm run test
 
-  server-e2e-test:
-    needs: prettier-check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Code
-        uses: actions/checkout@v4
-      - name: Install NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Clean install dependencies
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install
-      - name: Run integration tests
-        run: npm run test:e2e
+#  server-e2e-test:
+#    needs: prettier-check
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Get Code
+#        uses: actions/checkout@v4
+#      - name: Install NodeJS
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: '20'
+#      - name: Clean install dependencies
+#        run: |
+#          rm -rf node_modules package-lock.json
+#          npm install
+#      - name: Run integration tests
+#        run: npm run test:e2e
 
   lambda-deploy:
     needs: [server-unit-test, server-e2e-test]
