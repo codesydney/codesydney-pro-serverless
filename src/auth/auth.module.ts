@@ -6,19 +6,20 @@ import { JwtModule } from '@nestjs/jwt'
 import { AccessTokenStrategy } from './accesstoken.strategy'
 import { RefreshTokenStrategy } from './refreshtoken.strategy'
 import { PassportModule } from '@nestjs/passport'
+import { APP_GUARD } from '@nestjs/core'
+import { RefreshTokenGuard } from './refresh-token/refresh-token.guard'
 
 @Module({
-  imports: [
-    UsersModule,
-    PassportModule.register({
-      defaultStrategy: 'jwt',
-    }),
-    JwtModule.register({
-      global: true,
-      secret: process.env.JWT_ACCESS_SECRET,
-    }),
+  imports: [UsersModule, PassportModule, JwtModule],
+  providers: [
+    AuthService,
+    AccessTokenStrategy,
+    RefreshTokenStrategy,
+    {
+      provide: APP_GUARD,
+      useClass: RefreshTokenGuard, // TODO: Still need to make the proper connections
+    },
   ],
-  providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })

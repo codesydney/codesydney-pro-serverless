@@ -11,7 +11,6 @@ import {
 import { AuthService } from './auth.service'
 import { LoginDto, UserDto } from 'src/types/user.dto'
 import { Public } from 'src/decorators/public.decorators'
-import { AccessTokenGuard } from './access-token/access-token.guard'
 import { RefreshTokenGuard } from './refresh-token/refresh-token.guard'
 import { Request } from 'express'
 
@@ -37,7 +36,7 @@ export class AuthController {
     return this.authService.register(userDto)
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(RefreshTokenGuard)
   @Get('logout')
   logout(@Req() req: Request) {
     const id = req.user['userId']
