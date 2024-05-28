@@ -21,6 +21,7 @@ model User {
   role      Roles @default(USER) 
   firstName String
   lastName  String
+  refreshToken String?
 }
 
 enum Roles {

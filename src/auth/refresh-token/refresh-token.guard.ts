@@ -1,23 +1,20 @@
 import {
-  CanActivate,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import { JwtService } from '@nestjs/jwt'
-import { Request } from 'express'
+import { AuthGuard } from '@nestjs/passport'
 import { IS_PUBLIC_KEY } from 'src/decorators/public.decorators'
+import { Request } from 'express'
 
 @Injectable()
-export class AuthGuard implements CanActivate {
-  constructor(
-    private jwtService: JwtService,
-    private reflector: Reflector,
-  ) {}
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    // This is the logic to set the public condition for the guard
-    // So that it reflects the @Public() annotation at the controller level
+export class RefreshTokenGuard extends AuthGuard('jwt-refresh') {
+  constructor(private reflector: Reflector) {
+    super()
+  }
+
+  canActivate(context: ExecutionContext) {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
@@ -34,17 +31,9 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException()
     }
 
-    try {
-      const payload = await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_ACCESS_SECRET,
-      })
-      // We're assigning the payload to the request object here
-      // so that we can access it in our route handlers
-      request['user'] = payload
-    } catch (error) {
-      throw new UnauthorizedException()
-    }
-    return true
+    //TODO: Verify if the custom logic is truly working, and test edge cases
+
+    return super.canActivate(context)
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {

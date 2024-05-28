@@ -32,6 +32,16 @@ export class UserRepository {
     return await this.repository.user.update({ where: { id: id }, data: user })
   }
 
+  async updateUserRefreshToken(
+    id: string,
+    refreshToken: string,
+  ): Promise<User> {
+    return await this.repository.user.update({
+      where: { id: id },
+      data: { refreshToken: refreshToken },
+    })
+  }
+
   async deleteUser(id: string): Promise<User> {
     return await this.repository.user.delete({ where: { id: id } })
   }

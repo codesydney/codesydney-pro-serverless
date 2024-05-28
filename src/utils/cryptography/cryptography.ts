@@ -16,4 +16,18 @@ export class Cryptography {
     const isMatched = await bcrypt.compare(password, hashedPassword)
     return isMatched
   }
+
+  async hashToken(token: string): Promise<string> {
+    const saltOrRounds = 10
+    const hashedToken = await bcrypt.hash(token, saltOrRounds)
+    return hashedToken
+  }
+
+  async compareHashedToken(
+    refreshToken: string,
+    hashedRefreshToken: string,
+  ): Promise<boolean> {
+    const isMatched = await bcrypt.compare(refreshToken, hashedRefreshToken)
+    return isMatched
+  }
 }

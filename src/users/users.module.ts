@@ -3,7 +3,7 @@ import { UserService } from './services/user/user.service'
 import { UserController } from './controllers/user/user.controller'
 import { PrismaModule } from 'src/prisma/prisma.module'
 import { APP_GUARD } from '@nestjs/core'
-import { AuthGuard } from 'src/auth/auth.guard'
+import { RefreshTokenGuard } from 'src/auth/refresh-token/refresh-token.guard'
 
 @Module({
   imports: [PrismaModule],
@@ -13,7 +13,7 @@ import { AuthGuard } from 'src/auth/auth.guard'
     UserService,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useClass: RefreshTokenGuard, // TODO: Still need to make the proper connections
     },
   ],
 })
