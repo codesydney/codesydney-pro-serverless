@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common'
+import { ForbiddenException, Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { Request } from 'express'
+import { JwtPayload } from 'src/types/jwt'
 
 //TODO: Some serious refactoring is needed once we go through security analysis
 
@@ -18,10 +19,16 @@ export class RefreshTokenStrategy extends PassportStrategy(
     })
   }
 
-  // This JWT payload should be a proper type but just doing adhoc for the moment
-  validate(req: Request, payload: { userId: string; email: string }) {
-    const [type, token] = req.headers.authorization?.split(' ') ?? []
-    const refreshToken = type === 'Bearer' ? token : undefined
-    return { ...payload, refreshToken }
+  validate(req: Request, payload: JwtPayload): JwtPayload {
+    const refreshToken = req.headers.authorization
+      ?.replace('Bearer', ' ')
+      .trim()
+
+    if (!refreshToken) throw new ForbiddenException('Refresh token malformed')
+
+    return {
+      ...payload,
+      refreshToken,
+    }
   }
 }

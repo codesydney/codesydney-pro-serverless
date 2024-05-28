@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
+import { JwtPayload } from 'src/types/jwt'
 
 //TODO: Some serious refactoring is needed once we go through security analysis
 
@@ -13,8 +14,7 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
     })
   }
 
-  // This JWT payload should be a proper type but just doing adhoc for the moment
-  validate(payload: { userId: string; email: string }) {
+  validate(payload: JwtPayload) {
     return payload
   }
 }

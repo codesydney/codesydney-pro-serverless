@@ -1,18 +1,20 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   Post,
-  Req,
   UseGuards,
 } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { LoginDto, UserDto } from 'src/types/user.dto'
-import { Public } from 'src/decorators/public.decorators'
+import {
+  GetCurrentUser,
+  GetCurrentUserId,
+  Public,
+} from 'src/decorators/public.decorators'
 import { RefreshTokenGuard } from './refresh-token/refresh-token.guard'
-import { Request } from 'express'
+import { Tokens } from 'src/types/jwt'
 
 //TODO: Some serious refactoring is needed once we go through security analysis
 
@@ -25,30 +27,31 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  login(@Body() loginDto: LoginDto) {
+  login(@Body() loginDto: LoginDto): Promise<Tokens> {
     return this.authService.login(loginDto.email, loginDto.password)
   }
 
   @Public()
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.CREATED)
   @Post('register')
-  register(@Body() userDto: UserDto) {
+  register(@Body() userDto: UserDto): Promise<Tokens> {
     return this.authService.register(userDto)
   }
 
-  @UseGuards(RefreshTokenGuard)
-  @Get('logout')
-  logout(@Req() req: Request) {
-    const id = req.user['userId']
-    return this.authService.logout(id)
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  logout(@GetCurrentUserId() userId: string): Promise<boolean> {
+    return this.authService.logout(userId)
   }
 
+  @Public()
   @UseGuards(RefreshTokenGuard)
-  @Get('refresh')
-  refreshTokens(@Req() req: Request) {
-    const id = req.user['userId']
-    const refreshToken = req.user['refreshToken']
-
-    return this.authService.refreshTokens(id, refreshToken)
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  refreshTokens(
+    @GetCurrentUserId() userId: string,
+    @GetCurrentUser('refreshToken') refreshToken: string,
+  ): Promise<Tokens> {
+    return this.authService.refreshTokens(userId, refreshToken)
   }
 }

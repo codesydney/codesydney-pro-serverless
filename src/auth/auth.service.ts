@@ -2,13 +2,12 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
+import { JwtPayload, Tokens } from 'src/types/jwt'
 import { ResUserDto, UserDto } from 'src/types/user.dto'
 import { UserService } from 'src/users/services/user/user.service'
 import { Cryptography } from 'src/utils/cryptography/cryptography'
-import { uuidv7 } from 'uuidv7'
 
 //TODO: Some serious refactoring is needed once we go through security analysis
 
@@ -21,7 +20,7 @@ export class AuthService {
 
   cryptography = new Cryptography()
 
-  async login(email: string, password: string): Promise<any> {
+  async login(email: string, password: string): Promise<Tokens> {
     const user = await this.userService.authUserByEmail(email)
 
     const validPassword = await this.cryptography.compareToHashedPassword(
@@ -30,45 +29,37 @@ export class AuthService {
     )
 
     if (!validPassword || !user) {
-      throw new UnauthorizedException()
+      throw new ForbiddenException('Access Denied')
     }
 
     // This JWT payload should be a proper type but just doing adhoc for the moment
-    const payload = { userId: user.id, email: user.email }
-    const tokens = await this.getTokens(payload.userId, payload.email)
-    return {
-      access_token: tokens,
-    }
+    // const payload = { userId: user.id, email: user.email }
+    const jwtPayload = { userId: user.id, email: user.email }
+    const tokens = await this.getTokens(jwtPayload)
+    return tokens
   }
 
-  async logout(userId: string) {
+  async logout(userId: string): Promise<boolean> {
     // Here we update the DB with a null value to the refresh token, thus invalidating
-    return this.userService.updateUserRefreshToken(userId, null)
+    const response = await this.userService.updateUserLogOutToken(userId)
+
+    if (!response.refreshToken) return true
   }
 
-  async register(userDto: UserDto): Promise<ResUserDto> {
+  async register(userDto: UserDto): Promise<Tokens> {
     const userExists = await this.userService.findUserByEmail(userDto.email)
     if (userExists) {
       throw new BadRequestException('User already exists')
     }
 
-    const cryptography = new Cryptography()
-    const uuid = uuidv7().toString()
-    userDto.id = uuid
-    userDto.password = await cryptography.hashPassword(userDto.password)
-    const newUser = await this.userService.createUser(userDto)
-    const tokens = await this.getTokens(newUser.id, newUser.email)
-    await this.updateRefreshToken(newUser.id, tokens.refreshToken)
-    return { ...newUser, tokens: tokens }
+    const user = await this.userService.createUser(userDto)
+    const jwtPayload = this.getJwtPayload(user)
+    const tokens = await this.getTokens(jwtPayload)
+    await this.updateRefreshToken(jwtPayload.userId, tokens.refreshToken)
+    return tokens
   }
 
-  async refreshTokens(
-    userId: string,
-    refreshToken: string,
-  ): Promise<{
-    accessToken: string
-    refreshToken: string
-  }> {
+  async refreshTokens(userId: string, refreshToken: string): Promise<Tokens> {
     const user = await this.userService.findUserById(userId)
     if (!user || !refreshToken) {
       throw new ForbiddenException('Access Denied')
@@ -83,19 +74,14 @@ export class AuthService {
       throw new ForbiddenException('Access Denied')
     }
 
-    const tokens = await this.getTokens(user.id, user.email)
+    const jwtPayload = this.getJwtPayload(user)
+    const tokens = await this.getTokens(jwtPayload)
     await this.updateRefreshToken(user.id, tokens.refreshToken)
     return tokens
   }
 
-  async getTokens(
-    userId: string,
-    email: string,
-  ): Promise<{
-    accessToken: string
-    refreshToken: string
-  }> {
-    const payload = { userId: userId, email: email }
+  async getTokens(jwtPayload: JwtPayload): Promise<Tokens> {
+    const payload = jwtPayload
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: process.env.JWT_ACCESS_SECRET,
@@ -122,5 +108,9 @@ export class AuthService {
     } catch (error) {
       throw new BadRequestException('Something gone wrong its FUBAR')
     }
+  }
+
+  private getJwtPayload(user: ResUserDto) {
+    return { userId: user.id, email: user.email }
   }
 }

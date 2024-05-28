@@ -37,8 +37,22 @@ export class UserRepository {
     refreshToken: string,
   ): Promise<User> {
     return await this.repository.user.update({
-      where: { id: id },
+      where: {
+        id: id,
+      },
       data: { refreshToken: refreshToken },
+    })
+  }
+
+  async updateUserLogOutToken(id: string): Promise<User> {
+    return await this.repository.user.update({
+      where: {
+        id: id,
+        refreshToken: {
+          not: null,
+        },
+      },
+      data: { refreshToken: null },
     })
   }
 

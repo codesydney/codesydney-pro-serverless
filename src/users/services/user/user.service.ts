@@ -46,6 +46,10 @@ export class UserService {
     return await this.repository.updateUserRefreshToken(id, refreshToken)
   }
 
+  async updateUserLogOutToken(id: string): Promise<ResUserDto> {
+    return await this.repository.updateUserLogOutToken(id)
+  }
+
   async deleteUser(id: string): Promise<ResUserDto> {
     return await this.repository.deleteUser(id)
   }
