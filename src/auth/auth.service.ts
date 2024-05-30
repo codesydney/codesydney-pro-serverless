@@ -4,10 +4,10 @@ import {
   Injectable,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { JwtPayload, Tokens } from 'src/types/jwt'
-import { ResUserDto, UserDto } from 'src/types/user.dto'
-import { UserService } from 'src/users/services/user/user.service'
-import { Cryptography } from 'src/utils/cryptography/cryptography'
+import { JwtPayload, Tokens } from '../types/jwt'
+import { ResUserDto, UserDto } from '../types/user.dto'
+import { UserService } from '../users/services/user/user.service'
+import { Cryptography } from '../utils/cryptography/cryptography'
 
 //TODO: Some serious refactoring is needed once we go through security analysis
 

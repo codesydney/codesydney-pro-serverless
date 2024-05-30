@@ -8,9 +8,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common'
-import { Public } from 'src/decorators/public.decorators'
-import { ReqUserDto, ResUserDto, UserDto } from 'src/types/user.dto'
-import { UserService } from 'src/users/services/user/user.service'
+import { Public } from '../../../decorators/public.decorators'
+import { ReqUserDto, ResUserDto, UserDto } from '../../../types/user.dto'
+import { UserService } from '../../../users/services/user/user.service'
 
 @Controller('api/v1/user')
 export class UserController {

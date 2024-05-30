@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
-import { PrismaService } from 'src/prisma/prisma.service'
+import { PrismaService } from '../../../prisma/prisma.service'
 import { ReqUserDto, ResUserDto, UserDto } from 'src/types/user.dto'
-import { UserRepository } from 'src/users/repository/repository'
-import { Cryptography } from 'src/utils/cryptography/cryptography'
+import { UserRepository } from '../../../users/repository/repository'
+import { Cryptography } from '../../../utils/cryptography/cryptography'
 import { uuidv7 } from 'uuidv7'
 
 @Injectable()

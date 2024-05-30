@@ -7,14 +7,14 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { AuthService } from './auth.service'
-import { LoginDto, UserDto } from 'src/types/user.dto'
+import { LoginDto, UserDto } from '../types/user.dto'
 import {
   GetCurrentUser,
   GetCurrentUserId,
   Public,
-} from 'src/decorators/public.decorators'
+} from '../decorators/public.decorators'
 import { RefreshTokenGuard } from './refresh-token/refresh-token.guard'
-import { Tokens } from 'src/types/jwt'
+import { Tokens } from '../types/jwt'
 
 //TODO: Some serious refactoring is needed once we go through security analysis
 
