@@ -3,8 +3,10 @@
 # The Team
 * @promie | Promie Yutasane | DevOps/Web Developer
 * @washington-shoji | Washington Shoji | Web Developer
+* @brodiehunt | Brodie Hunt | Web Developer
 * @engramar | Engramar Bollas | Product Manager
 
+## Tech Stack
 ### Backend
 * NestJS + TypeScript
 * Postgres
@@ -13,11 +15,9 @@
 
 ### Frontend
 * React + TypeScript
-* AWS (S3, CloudFront)
-* Terraform (Infrastructure as Code)
+* CSC Deployment
 
 # Team Consensus
-* Monorepo
 * PR approval (at least 1 approval)
 * Use of PR submission template
 
