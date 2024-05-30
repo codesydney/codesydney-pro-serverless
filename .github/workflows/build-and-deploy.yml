@@ -3,21 +3,21 @@ name: CI
 on: [push, workflow_dispatch]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Code
-        uses: actions/checkout@v4
-      - name: Install NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Clean install dependencies
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install
-      - name: Run build
-        run: npm run build
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Get Code
+#        uses: actions/checkout@v4
+#      - name: Install NodeJS
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: '20'
+#      - name: Clean install dependencies
+#        run: |
+#          rm -rf node_modules package-lock.json
+#          npm install
+#      - name: Run build
+#        run: npm run build
 
 #  prettier-check:
 #    needs: build
@@ -79,7 +79,7 @@ jobs:
 #          DATABASE_URL: ${{secrets.DATABASE_URL}}
 
   lambda-deploy:
-    needs: [build]
+#    needs: [build]
     runs-on: ubuntu-latest
 #    if: github.ref == 'refs/heads/main'
     steps:
