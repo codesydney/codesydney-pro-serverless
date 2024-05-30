@@ -55,6 +55,7 @@ jobs:
         env:
           JWT_ACCESS_SECRET: ${{secrets.JWT_ACCESS_SECRET}}
           JWT_REFRESH_SECRET: ${{secrets.JWT_REFRESH_SECRET}}
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
 
   server-e2e-test:
     needs: prettier-check
@@ -75,6 +76,7 @@ jobs:
         env:
           JWT_ACCESS_SECRET: ${{secrets.JWT_ACCESS_SECRET}}
           JWT_REFRESH_SECRET: ${{secrets.JWT_REFRESH_SECRET}}
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
 
   lambda-deploy:
     needs: [server-unit-test]
