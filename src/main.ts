@@ -1,8 +1,16 @@
 import { NestFactory } from '@nestjs/core'
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  // Dev Note: Adding a FastifyAdapter so that NestJS runs the Fastify App Engine under the hood
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter({ logger: true }),
+  )
 
   // Enable CORS
   app.enableCors({
@@ -12,5 +20,6 @@ async function bootstrap() {
   })
 
   await app.listen(3000)
+  console.log(`Application is running on: ${await app.getUrl()}`)
 }
 bootstrap()

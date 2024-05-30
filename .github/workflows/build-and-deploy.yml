@@ -52,6 +52,10 @@ jobs:
           npm install
       - name: Run unit tests
         run: npm run test
+        env:
+          JWT_ACCESS_SECRET: ${{secrets.JWT_ACCESS_SECRET}}
+          JWT_REFRESH_SECRET: ${{secrets.JWT_REFRESH_SECRET}}
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
 
   server-e2e-test:
     needs: prettier-check
@@ -69,6 +73,10 @@ jobs:
           npm install
       - name: Run integration tests
         run: npm run test:e2e
+        env:
+          JWT_ACCESS_SECRET: ${{secrets.JWT_ACCESS_SECRET}}
+          JWT_REFRESH_SECRET: ${{secrets.JWT_REFRESH_SECRET}}
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
 
   lambda-deploy:
     needs: [server-unit-test]
@@ -96,7 +104,6 @@ jobs:
           mask-aws-account-id: 'no'
       - name: Deploy to AWS
         run: npm run serverless:deploy
-
 #  lambda-remove:
 #    needs: [server-unit-test]
 #    runs-on: ubuntu-latest
