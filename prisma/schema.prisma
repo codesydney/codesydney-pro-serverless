@@ -28,3 +28,16 @@ enum Roles {
   USER
   ADMIN
 }
+
+model Experimental {
+   id         String @id
+   tag        Tags @default(EXP)
+   completed  Boolean
+   label      String
+}
+
+enum Tags {
+  EXP
+  FINAL
+  PROTO
+}
