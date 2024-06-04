@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { JwtPayload, Tokens } from '../types/jwt'
-import { ResUserDto, UserDto } from '../types/user.dto'
+import { ResUserAuthDto, UserDto } from '../types/user.dto'
 import { UserService } from '../users/services/user/user.service'
 import { Cryptography } from '../utils/cryptography/cryptography'
 
@@ -34,7 +34,11 @@ export class AuthService {
 
     // This JWT payload should be a proper type but just doing adhoc for the moment
     // const payload = { userId: user.id, email: user.email }
-    const jwtPayload = { userId: user.id, email: user.email }
+    const jwtPayload: JwtPayload = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    }
     const tokens = await this.getTokens(jwtPayload)
     return tokens
   }
@@ -55,7 +59,7 @@ export class AuthService {
     const user = await this.userService.createUser(userDto)
     const jwtPayload = this.getJwtPayload(user)
     const tokens = await this.getTokens(jwtPayload)
-    await this.updateRefreshToken(jwtPayload.userId, tokens.refreshToken)
+    await this.updateRefreshToken(jwtPayload.id, tokens.refreshToken)
     return tokens
   }
 
@@ -110,7 +114,7 @@ export class AuthService {
     }
   }
 
-  private getJwtPayload(user: ResUserDto) {
-    return { userId: user.id, email: user.email }
+  private getJwtPayload(user: ResUserAuthDto): JwtPayload {
+    return { id: user.id, email: user.email, role: user.role }
   }
 }

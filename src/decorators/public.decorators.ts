@@ -19,7 +19,7 @@ export const GetCurrentUserId = createParamDecorator(
 function getCurrentUserId(context: ExecutionContext) {
   const request = context.switchToHttp().getRequest()
   const user = request.user as JwtPayload
-  return user.userId
+  return user.id
 }
 
 export const GetCurrentUser = createParamDecorator(

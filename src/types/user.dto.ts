@@ -39,6 +39,12 @@ export interface ResUserDto {
   refreshToken?: string
 }
 
+export interface ResUserAuthDto {
+  id?: string
+  email: string
+  role?: Roles // This is a prisma enum, hence too much coupling and dependency
+}
+
 export interface LoginDto {
   email: string
   password: string
