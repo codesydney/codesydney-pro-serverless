@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 
 // TODO: Making this as a class because we will most likely be adding some more sophisticated dependency injections in the future
 export class Cryptography {

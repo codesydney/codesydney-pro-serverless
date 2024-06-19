@@ -29,6 +29,3 @@ package:
   include:
     - node_modules/.prisma/**
     - node_modules/@prisma/**
-
-  exclude:
-    - node_modules/bcrypt/**
