@@ -8,6 +8,9 @@ provider:
   stage: ${opt:stage, 'dev'}
   environment:
     NODE_PATH: "./:/opt/node_modules"
+    DATABASE_URL: ${env:DATABASE_URL}
+    JWT_ACCESS_SECRET: ${env:JWT_ACCESS_SECRET}
+    JWT_REFRESH_SECRET: ${env:JWT_REFRESH_SECRET}
   region: ap-southeast-2
   memorySize: 128
   logRetentionInDays: 1
