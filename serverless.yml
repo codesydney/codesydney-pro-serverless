@@ -4,8 +4,10 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs20.x
+  runtime: nodejs18.x
   stage: ${opt:stage, 'dev'}
+  environment:
+    NODE_PATH: "./:/opt/node_modules"
   region: ap-southeast-2
   memorySize: 128
   logRetentionInDays: 1
@@ -25,4 +27,8 @@ plugins:
 
 package:
   include:
-    - .prisma/client/**
+    - node_modules/.prisma/**
+    - node_modules/@prisma/**
+
+  exclude:
+    - node_modules/bcrypt/**
