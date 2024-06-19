@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
 datasource db {
@@ -15,10 +16,10 @@ datasource db {
 
 model User {
   //TODO: Boss I'm removing the default UUIDV4 to manually pass UUIDV7 as it is better for indexing
-  id        String @id 
+  id        String @id
   email     String @unique
   password  String
-  role      Roles @default(USER) 
+  role      Roles @default(USER)
   firstName String
   lastName  String
   refreshToken String?
