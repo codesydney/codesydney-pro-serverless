@@ -3,83 +3,83 @@ name: CI
 on: [push, workflow_dispatch]
 
 jobs:
-#  build:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Get Code
-#        uses: actions/checkout@v4
-#      - name: Install NodeJS
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: '20'
-#      - name: Clean install dependencies
-#        run: |
-#          rm -rf node_modules package-lock.json
-#          npm install
-#      - name: Run build
-#        run: npm run build
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Clean install dependencies
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
+      - name: Run build
+        run: npm run build
 
-#  prettier-check:
-#    needs: build
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Get Code
-#        uses: actions/checkout@v4
-#      - name: Install NodeJS
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: '20'
-#      - name: Clean install dependencies
-#        run: |
-#          rm -rf node_modules package-lock.json
-#          npm install
-#      - name: Run prettier
-#        run: npm run prettier:check
-#
-#  server-unit-test:
-#    needs: prettier-check
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Get Code
-#        uses: actions/checkout@v4
-#      - name: Install NodeJS
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: '20'
-#      - name: Clean install dependencies
-#        run: |
-#          rm -rf node_modules package-lock.json
-#          npm install
-#      - name: Run unit tests
-#        run: npm run test
-#        env:
-#          JWT_ACCESS_SECRET: ${{secrets.JWT_ACCESS_SECRET}}
-#          JWT_REFRESH_SECRET: ${{secrets.JWT_REFRESH_SECRET}}
-#          DATABASE_URL: ${{secrets.DATABASE_URL}}
-#
-#  server-e2e-test:
-#    needs: prettier-check
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Get Code
-#        uses: actions/checkout@v4
-#      - name: Install NodeJS
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: '20'
-#      - name: Clean install dependencies
-#        run: |
-#          rm -rf node_modules package-lock.json
-#          npm install
-#      - name: Run integration tests
-#        run: npm run test:e2e
-#        env:
-#          JWT_ACCESS_SECRET: ${{secrets.JWT_ACCESS_SECRET}}
-#          JWT_REFRESH_SECRET: ${{secrets.JWT_REFRESH_SECRET}}
-#          DATABASE_URL: ${{secrets.DATABASE_URL}}
+  prettier-check:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Clean install dependencies
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
+      - name: Run prettier
+        run: npm run prettier:check
+
+  server-unit-test:
+    needs: prettier-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Clean install dependencies
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
+      - name: Run unit tests
+        run: npm run test
+        env:
+          JWT_ACCESS_SECRET: ${{secrets.JWT_ACCESS_SECRET}}
+          JWT_REFRESH_SECRET: ${{secrets.JWT_REFRESH_SECRET}}
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
+
+  server-e2e-test:
+    needs: prettier-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Clean install dependencies
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
+      - name: Run integration tests
+        run: npm run test:e2e
+        env:
+          JWT_ACCESS_SECRET: ${{secrets.JWT_ACCESS_SECRET}}
+          JWT_REFRESH_SECRET: ${{secrets.JWT_REFRESH_SECRET}}
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
 
   lambda-deploy:
-#    needs: [build]
+    needs: [server-unit-test, server-e2e-test]
     runs-on: ubuntu-latest
 #    if: github.ref == 'refs/heads/main'
     steps:
