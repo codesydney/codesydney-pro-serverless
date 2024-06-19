@@ -102,6 +102,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
           mask-aws-account-id: 'no'
+      - name: Set environment variables
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
+          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+        run: |
+          echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
+          echo "JWT_ACCESS_SECRET=$JWT_ACCESS_SECRET" >> $GITHUB_ENV
+          echo "JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET" >> $GITHUB_ENV
       - name: Deploy to AWS
         run: npm run serverless:deploy
 #  lambda-remove:
