@@ -1,4 +1,4 @@
-# Techies4Good
+# Code.Sydney Pro
 
 # The Team
 * @promie | Promie Yutasane | DevOps/Web Developer
