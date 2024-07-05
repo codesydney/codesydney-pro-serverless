@@ -23,13 +23,17 @@ export class AuthService {
   async login(email: string, password: string): Promise<Tokens> {
     const user = await this.userService.authUserByEmail(email)
 
+    if (!user) {
+      throw new ForbiddenException('Email or password is incorrect.')
+    }
+
     const validPassword = await this.cryptography.compareToHashedPassword(
       password,
       user.password,
     )
 
-    if (!validPassword || !user) {
-      throw new ForbiddenException('Access Denied')
+    if (!validPassword) {
+      throw new ForbiddenException('Email or password is incorrect.')
     }
 
     // This JWT payload should be a proper type but just doing adhoc for the moment
