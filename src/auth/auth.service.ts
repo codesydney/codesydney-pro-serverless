@@ -44,6 +44,10 @@ export class AuthService {
       role: user.role,
     }
     const tokens = await this.getTokens(jwtPayload)
+
+    // Update the user's refresh token in the database
+    await this.updateRefreshToken(jwtPayload.id, tokens.refreshToken)
+
     return tokens
   }
 
