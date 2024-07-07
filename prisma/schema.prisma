@@ -15,14 +15,18 @@ datasource db {
 }
 
 model User {
-  //TODO: Boss I'm removing the default UUIDV4 to manually pass UUIDV7 as it is better for indexing
-  id        String @id
-  email     String @unique
-  password  String
-  role      Roles @default(USER)
-  firstName String
-  lastName  String
-  refreshToken String?
+  id                   String  @id
+  email                String  @unique
+  password             String
+  role                 Roles   @default(USER)
+  firstName            String
+  lastName             String
+  refreshToken         String?
+  linkedInUrl          String?
+  githubUrl            String?
+  userBlurb            String?
+  codeSydneyAdminBlurb String?
+  photoUrl             String?
 }
 
 enum Roles {
@@ -31,10 +35,10 @@ enum Roles {
 }
 
 model Experimental {
-   id         String @id
-   tag        Tags @default(EXP)
-   completed  Boolean
-   label      String
+  id         String @id
+  tag        Tags   @default(EXP)
+  completed  Boolean
+  label      String
 }
 
 enum Tags {
